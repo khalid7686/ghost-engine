@@ -10,4 +10,5 @@
 ## Phase 2: Engine Construction
 
 **Current Status:**
-- [ ] **Next Task:** Create the main script file (`engine.py`) and add the initial code structure.
+- [x] Main script file `engine.py` created with initial structure.
+- [ ] **Next Task:** Add code to read content from .txt files.

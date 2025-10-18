@@ -11,4 +11,5 @@
 
 **Current Status:**
 - [x] Main script file `engine.py` created with initial structure.
-- [ ] **Next Task:** Add code to read content from .txt files.
+- [x] Code added to read content from .txt files.
+- [ ] **Next Task:** Add main logic to load all content into memory.

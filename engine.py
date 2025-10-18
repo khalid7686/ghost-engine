@@ -1,6 +1,5 @@
-# === GHOST ENGINE v0.4 ===
+# === GHOST ENGINE v0.5 (Final Engine Code) ===
 # This is the main script for our project.
-# We will build it step by step.
 
 # --- Stage 1: Importing necessary libraries ---
 import os
@@ -15,32 +14,43 @@ def read_file_lines(file_path):
             lines = [line.strip() for line in f if line.strip()]
         return lines
     except FileNotFoundError:
-        print(f"Warning: File not found at {file_path}. Returning empty list.")
+        # This is not an error, it just means the file is empty or not created yet.
         return []
 
 # --- Stage 4: Function to generate a random post ---
 def generate_post(sentences, questions, hashtags, emojis):
     """Generates a single, randomized post string."""
-    
-    # Start with a mandatory sentence
     if not sentences:
         return "Error: No sentences provided. Cannot generate a post."
     
     post_parts = [random.choice(sentences)]
 
-    # Add other parts based on probability
-    if questions and random.random() < 0.5: # 50% chance to add a question
+    if questions and random.random() < 0.5:
         post_parts.append(random.choice(questions))
-        
-    if hashtags and random.random() < 0.4: # 40% chance to add a hashtag
+    if hashtags and random.random() < 0.4:
         post_parts.append(random.choice(hashtags))
-        
-    if emojis and random.random() < 0.7: # 70% chance to add an emoji
+    if emojis and random.random() < 0.7:
         post_parts.append(random.choice(emojis))
 
-    # Shuffle the parts to make the order random, then join them with spaces
     random.shuffle(post_parts)
     return " ".join(post_parts)
+
+# --- Stage 5: Function to write content to a new file ---
+def write_new_file(content):
+    """Creates a new file with a timestamp and writes content to it."""
+    # Generate a unique filename using the current UTC timestamp
+    timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"updates/update_{timestamp}.md"
+    
+    # Ensure the 'updates' directory exists
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    
+    # Write the content to the new file
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(content)
+    
+    print(f"Successfully created new file: {filename}")
+    return filename
 
 # --- Stage 3: Main Execution Block ---
 def main():
@@ -53,23 +63,26 @@ def main():
     hashtags = read_file_lines('hashtags.txt')
     emojis = read_file_lines('emojis.txt')
 
-    print(f"Successfully loaded {len(sentences)} sentences.")
-    print(f"Successfully loaded {len(questions)} questions.")
-    print(f"Successfully loaded {len(hashtags)} hashtags.")
-    print(f"Successfully loaded {len(emojis)} emojis.")
+    # Generate a new post
+    new_post_content = generate_post(sentences, questions, hashtags, emojis)
+    
+    # For now, we will just print it. In the final version, this will be written to a file.
+    # We will add the file writing part after we set up the GitHub Action.
+    # For now, let's add the product link to the post content.
+    
+    # IMPORTANT: We will get the product URL from GitHub Secrets later.
+    # For now, we use a placeholder.
+    product_url = os.environ.get('PRODUCT_URL', 'https://www.YOUR-PRODUCT-LINK-HERE.com')
+    
+    final_content = new_post_content + f"\n\n[Check it out!]({product_url})"
 
-    # Let's generate a test post to see if it works
-    print("\n--- Generating a Test Post ---")
-    test_post = generate_post(sentences, questions, hashtags, emojis)
-    print(test_post)
-    print("----------------------------\n")
+    # Write the final content to a new file
+    write_new_file(final_content)
 
-    print("--- Ghost Engine Initialization Complete ---")
+    print("--- Ghost Engine Run Complete ---")
 
 
 # This standard Python construct ensures that the main() function is called
 # only when the script is executed directly.
 if __name__ == "__main__":
     main()
-
-# --- End of Stage 3 ---

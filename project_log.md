@@ -19,4 +19,5 @@
 ## Phase 3: Automation & Launch
 
 **Current Status:**
-- [ ] **Next Task:** Securely store the product URL using GitHub Secrets.
+- [x] Product URL securely stored using GitHub Secrets.
+- [ ] **Next Task:** Create the GitHub Actions workflow file (`main.yml`) to automate the script.

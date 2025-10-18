@@ -12,4 +12,5 @@
 **Current Status:**
 - [x] Main script file `engine.py` created with initial structure.
 - [x] Code added to read content from .txt files.
-- [ ] **Next Task:** Add main logic to load all content into memory.
+- [x] Main logic added to load all content into memory.
+- [ ] **Next Task:** Create the `generate_post()` function to build a random post.

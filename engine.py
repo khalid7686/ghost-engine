@@ -1,4 +1,4 @@
-# === GHOST ENGINE v0.3 ===
+# === GHOST ENGINE v0.4 ===
 # This is the main script for our project.
 # We will build it step by step.
 
@@ -18,6 +18,30 @@ def read_file_lines(file_path):
         print(f"Warning: File not found at {file_path}. Returning empty list.")
         return []
 
+# --- Stage 4: Function to generate a random post ---
+def generate_post(sentences, questions, hashtags, emojis):
+    """Generates a single, randomized post string."""
+    
+    # Start with a mandatory sentence
+    if not sentences:
+        return "Error: No sentences provided. Cannot generate a post."
+    
+    post_parts = [random.choice(sentences)]
+
+    # Add other parts based on probability
+    if questions and random.random() < 0.5: # 50% chance to add a question
+        post_parts.append(random.choice(questions))
+        
+    if hashtags and random.random() < 0.4: # 40% chance to add a hashtag
+        post_parts.append(random.choice(hashtags))
+        
+    if emojis and random.random() < 0.7: # 70% chance to add an emoji
+        post_parts.append(random.choice(emojis))
+
+    # Shuffle the parts to make the order random, then join them with spaces
+    random.shuffle(post_parts)
+    return " ".join(post_parts)
+
 # --- Stage 3: Main Execution Block ---
 def main():
     """The main function where the script's logic resides."""
@@ -29,11 +53,16 @@ def main():
     hashtags = read_file_lines('hashtags.txt')
     emojis = read_file_lines('emojis.txt')
 
-    # For now, let's just print a confirmation to see if it worked.
     print(f"Successfully loaded {len(sentences)} sentences.")
     print(f"Successfully loaded {len(questions)} questions.")
     print(f"Successfully loaded {len(hashtags)} hashtags.")
     print(f"Successfully loaded {len(emojis)} emojis.")
+
+    # Let's generate a test post to see if it works
+    print("\n--- Generating a Test Post ---")
+    test_post = generate_post(sentences, questions, hashtags, emojis)
+    print(test_post)
+    print("----------------------------\n")
 
     print("--- Ghost Engine Initialization Complete ---")
 
